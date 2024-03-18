@@ -20,7 +20,7 @@ Instance and panoptic segmentation using yolov9 in onnxruntime.
 
 Download [gelan-c-pan.pt](https://github.com/WongKinYiu/yolov9/releases/download/v0.1/gelan-c-pan.pt)
 
-Convert the model to onnx format:
+Prepare an onnx model:
 ``` shell
 git clone https://github.com/WongKinYiu/yolov9
 pip install -r requirements.txt
