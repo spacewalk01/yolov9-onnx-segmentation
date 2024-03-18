@@ -37,11 +37,11 @@ python main.py --model <onnx model> --input <image or folder or video>
 Example:
 ``` shell
 # infer an image
-python main.py --model gelan-c-pan.onnx test.jpg
+python main.py --model gelan-c-pan.onnx --input test.jpg
 # infer a folder(images)
-python main.py --model gelan-c-pan.onnx data
+python main.py --model gelan-c-pan.onnx --input folder
 # infer a video
-python main.py --model gelan-c-pan.onnx test.mp4  # the video path
+python main.py --model gelan-c-pan.onnx --input test.mp4  # the video path
 ```
 
 ## 👏 Acknowledgement
