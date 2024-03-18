@@ -1,9 +1,12 @@
+# -*- coding: utf-8 -*-
+
 import math
 import time
 import cv2
 import numpy as np
 import onnxruntime
-
+import argparse
+import os
 from util import xywh2xyxy, nms, draw_detections, sigmoid, imread_from_url
 
 
@@ -180,3 +183,97 @@ class YOLOSeg:
         boxes *= np.array([image_shape[1], image_shape[0], image_shape[1], image_shape[0]])
 
         return boxes
+
+
+
+def is_image(file_path):
+    """Check if the given path points to an image."""
+    image_extensions = ['.jpg', '.jpeg', '.png', '.bmp', '.gif', '.tiff']
+    return any(file_path.lower().endswith(ext) for ext in image_extensions)
+
+def is_video(file_path):
+    """Check if the given path points to a video."""
+    video_extensions = ['.mp4', '.avi', '.mkv', '.mov', '.wmv']
+    return any(file_path.lower().endswith(ext) for ext in video_extensions)
+
+def detect_input_type(input_path):
+    """Detect the type of input based on the provided path."""
+    if os.path.isfile(input_path):
+        if is_image(input_path):
+            return 'image'
+        elif is_video(input_path):
+            return 'video'
+        else:
+            return None  # Not an image or video
+    elif os.path.isdir(input_path):
+        return 'folder'
+    else:
+        return None  # Not a valid file or directory
+
+if __name__ == '__main__':
+    # Initialize argument parser
+    parser = argparse.ArgumentParser(description='Object detection using YOLOv8')
+    parser.add_argument('--model', type=str, default="gelan-c-pan.onnx", help='Path to the ONNX model')
+    parser.add_argument('--input', type=str, default="video", help='Input type: "image", "folder", or "video"')
+    args = parser.parse_args()
+
+    # Initialize YOLOv8 Instance Segmentator
+    yoloseg = YOLOSeg(args.model, conf_thres=0.3, iou_thres=0.5)
+
+    # Create an output folder
+    output_folder = "results"
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+
+    input_type = detect_input_type(args.input)
+    if input_type == 'image':
+        img = cv2.imread(args.input)
+        print("image: ", args.input)
+        # Detect objects in the image
+        yoloseg(img)
+        # Draw detections
+        combined_img = yoloseg.draw_masks(img)
+        output_path = os.path.join(output_folder, "result.jpg")
+        cv2.imwrite(output_path, combined_img)
+        cv2.imshow("Output", combined_img)
+        cv2.waitKey(0)
+    elif input_type == 'folder':
+        # Loop through image files in the given folder
+        for filename in os.listdir(args.input):
+            if filename.endswith(".jpg") or filename.endswith(".png"):  # Assuming images are jpg or png format
+                img_path = os.path.join(args.input, filename)
+                print("folder:", img_path)
+                img = cv2.imread(img_path)
+                # Detect objects in the image
+                yoloseg(img)
+                # Draw detections
+                combined_img = yoloseg.draw_masks(img)
+                output_path = os.path.join(output_folder, filename)
+                cv2.imwrite(output_path, combined_img)
+                cv2.imshow("Output", combined_img)
+                cv2.waitKey(0)
+    elif input_type == 'video':
+        cap = cv2.VideoCapture(args.input)  # Replace with the actual video path
+        frame_width = int(cap.get(3))  # Frame width
+        frame_height = int(cap.get(4))  # Frame height
+        print(frame_width, frame_height)
+        fps = int(cap.get(cv2.CAP_PROP_FPS))  # Frames per second
+        out = cv2.VideoWriter(os.path.join(output_folder, "result.mp4"), cv2.VideoWriter_fourcc(*'mp4v'), fps, (frame_width, frame_height))
+        i = 0
+        while True:
+            ret, frame = cap.read()
+            if not ret:
+                break
+            # Detect objects in the frame
+            yoloseg(frame)
+            # Draw detections
+            combined_frame = yoloseg.draw_masks(frame)
+            print(combined_frame.shape)
+            cv2.imshow("Output", combined_frame)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+            if i > 100:
+                break
+            i += 1
+        cap.release()
+        cv2.destroyAllWindows()
