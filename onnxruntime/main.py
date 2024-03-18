@@ -210,12 +210,12 @@ def detect_input_type(input_path):
 
 if __name__ == '__main__':
     # Initialize argument parser
-    parser = argparse.ArgumentParser(description='Object detection using YOLOv8')
+    parser = argparse.ArgumentParser(description='Object detection using YOLOv9')
     parser.add_argument('--model', type=str, default="gelan-c-pan.onnx", help='Path to the ONNX model')
     parser.add_argument('--input', type=str, default="video", help='Input type: "image", "folder", or "video"')
     args = parser.parse_args()
 
-    # Initialize YOLOv8 Instance Segmentator
+    # Initialize YOLOv9 Instance Segmentator
     yoloseg = YOLOSeg(args.model, conf_thres=0.3, iou_thres=0.5)
 
     # Create an output folder
