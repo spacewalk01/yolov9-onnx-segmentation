@@ -20,6 +20,13 @@ Instance and panoptic segmentation using yolov9 in onnxruntime.
 
 ```
 # infer
+
+git clone https://github.com/WongKinYiu/yolov9
+pip install -r requirements.txt
+```
+Download [gelan-c-pan.pt](https://github.com/WongKinYiu/yolov9/releases/download/v0.1/gelan-c-pan.pt)
+
+```
 cd onnxruntime
 python main.py --model <onnx model> --input <image or folder or video> 
 ```
