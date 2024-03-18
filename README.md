@@ -36,8 +36,6 @@ python main.py --model <onnx model> --input <image or folder or video>
 
 Example:
 ``` shell
-python main.py --model gelan-c-pan.onnx --input zidane.jpg
-
 # infer an image
 python main.py --model gelan-c-pan.onnx test.jpg
 # infer a folder(images)
