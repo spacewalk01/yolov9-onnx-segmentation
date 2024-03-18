@@ -11,7 +11,7 @@ YOLOv9 ONNX Segmentation
 Instance and panoptic segmentation using yolov9 in onnxruntime.
 
 <p align="center">
-  <img src="onnxruntime/result.jpg" width="300px" />
+  <img src="onnxruntime/result.jpg" width="600px" />
 </p>
 
 
