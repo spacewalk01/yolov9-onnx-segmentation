@@ -42,3 +42,4 @@ python main.py --model gelan-c-pan.onnx --input zidane.jpg
 
 This project is based on the following projects:
 - [YOLOv9](https://github.com/WongKinYiu/yolov9) - YOLOv9: Learning What You Want to Learn Using Programmable Gradient Information.
+- [ONNX-YOLOv8-Instance-Segmentation](https://github.com/ibaiGorordo/ONNX-YOLOv8-Instance-Segmentation) - Python scripts performing Instance Segmentation using the YOLOv8 model in ONNX.
