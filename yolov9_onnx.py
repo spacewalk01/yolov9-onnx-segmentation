@@ -180,23 +180,3 @@ class YOLOSeg:
         boxes *= np.array([image_shape[1], image_shape[0], image_shape[1], image_shape[0]])
 
         return boxes
-
-
-if __name__ == '__main__':
-
-    model_path = "gelan-c-pan.onnx"
-
-    # Initialize YOLOv8 Instance Segmentator
-    yoloseg = YOLOSeg(model_path, conf_thres=0.3, iou_thres=0.5)
-
-    img_url = "https://live.staticflickr.com/13/19041780_d6fd803de0_3k.jpg"
-    img = imread_from_url(img_url)
-
-    # Detect Objects
-    yoloseg(img)
-
-    # Draw detections
-    combined_img = yoloseg.draw_masks(img)
-    cv2.namedWindow("Output", cv2.WINDOW_NORMAL)
-    cv2.imshow("Output", combined_img)
-    cv2.waitKey(0)
