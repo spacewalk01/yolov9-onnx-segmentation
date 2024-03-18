@@ -33,9 +33,17 @@ git clone https://github.com/spacewalk01/yolov9-onnx-segmentation.git
 cd yolov9-onnx-segmentation/onnxruntime
 python main.py --model <onnx model> --input <image or folder or video>
 ```
+
 Example:
 ``` shell
 python main.py --model gelan-c-pan.onnx --input zidane.jpg
+
+# infer an image
+python main.py --model gelan-c-pan.onnx test.jpg
+# infer a folder(images)
+python main.py --model gelan-c-pan.onnx data
+# infer a video
+python main.py --model gelan-c-pan.onnx test.mp4  # the video path
 ```
 
 ## 👏 Acknowledgement
