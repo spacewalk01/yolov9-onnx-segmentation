@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import math
 import time
 import cv2
@@ -254,12 +252,10 @@ if __name__ == '__main__':
                 cv2.waitKey(0)
     elif input_type == 'video':
         cap = cv2.VideoCapture(args.input)  # Replace with the actual video path
-        frame_width = int(cap.get(3))  # Frame width
-        frame_height = int(cap.get(4))  # Frame height
-        print(frame_width, frame_height)
+        frame_width = round(cap.get(cv2.CAP_PROP_FRAME_WIDTH))  # Frame width
+        frame_height = round(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))  # Frame height
         fps = int(cap.get(cv2.CAP_PROP_FPS))  # Frames per second
-        out = cv2.VideoWriter(os.path.join(output_folder, "result.mp4"), cv2.VideoWriter_fourcc(*'mp4v'), fps, (frame_width, frame_height))
-        i = 0
+        out = cv2.VideoWriter(os.path.join(output_folder, "result.mp4"), cv2.VideoWriter_fourcc(*'DIVX'), fps, (frame_width, frame_height))
         while True:
             ret, frame = cap.read()
             if not ret:
@@ -268,12 +264,10 @@ if __name__ == '__main__':
             yoloseg(frame)
             # Draw detections
             combined_frame = yoloseg.draw_masks(frame)
-            print(combined_frame.shape)
+            out.write(combined_frame)
             cv2.imshow("Output", combined_frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
-            if i > 100:
-                break
-            i += 1
         cap.release()
+        out.release()
         cv2.destroyAllWindows()
