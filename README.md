@@ -19,7 +19,8 @@ Instance and panoptic segmentation using yolov9 in onnxruntime.
 ## 🚀 Quick Start
 
 ```
-# infer 
+# infer
+cd onnxruntime
 python main.py --model <onnx model> --input <image or folder or video> 
 ```
 
