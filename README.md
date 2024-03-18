@@ -30,7 +30,7 @@ python export.py --weights gelan-c-pan.pt --include onnx
 Perform inference:
 ``` shell
 git clone https://github.com/spacewalk01/yolov9-onnx-segmentation.git
-cd onnxruntime
+cd yolov9-onnx-segmentation/onnxruntime
 python main.py --model <onnx model> --input <image or folder or video>
 ```
 Example:
